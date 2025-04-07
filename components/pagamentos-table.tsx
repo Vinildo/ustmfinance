@@ -2443,6 +2443,89 @@ export function PagamentosTable() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        {pagamentoParaTransferencia && (
+          <Dialog open={isTransferenciaDialogOpen} onOpenChange={setIsTransferenciaDialogOpen}>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Transferência Bancária</DialogTitle>
+                <DialogDescription>
+                  Preencha os detalhes da transferência para o pagamento {pagamentoParaTransferencia.referencia}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="bg-gray-50 p-3 rounded-md mb-2">
+                  <p className="font-medium">{pagamentoParaTransferencia.fornecedorNome}</p>
+                  <p className="text-sm text-gray-500">{pagamentoParaTransferencia.referencia}</p>
+                  <p className="text-sm font-medium">
+                    {pagamentoParaTransferencia.valor.toLocaleString("pt-MZ", { style: "currency", currency: "MZN" })}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="data-transferencia" className="text-sm font-medium mb-1 block">
+                      Data
+                    </Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="outline" className="w-full justify-start text-left font-normal">
+                          {format(detalhesTransferencia.dataTransferencia, "dd/MM/yyyy", { locale: pt })}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          selected={detalhesTransferencia.dataTransferencia}
+                          onSelect={(date) =>
+                            date && setDetalhesTransferencia({ ...detalhesTransferencia, dataTransferencia: date })
+                          }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="referencia" className="text-sm font-medium mb-1 block">
+                      Referência
+                    </Label>
+                    <Input
+                      id="referencia"
+                      value={detalhesTransferencia.referencia}
+                      onChange={(e) =>
+                        setDetalhesTransferencia({ ...detalhesTransferencia, referencia: e.target.value })
+                      }
+                      placeholder="Nº da transferência"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="observacoes" className="text-sm font-medium mb-1 block">
+                    Observações
+                  </Label>
+                  <Textarea
+                    id="observacoes"
+                    value={detalhesTransferencia.observacoes}
+                    onChange={(e) =>
+                      setDetalhesTransferencia({ ...detalhesTransferencia, observacoes: e.target.value })
+                    }
+                    placeholder="Observações adicionais"
+                    rows={2}
+                  />
+                </div>
+              </div>
+              <DialogFooter className="mt-2">
+                <Button variant="outline" onClick={() => setIsTransferenciaDialogOpen(false)}>
+                  Cancelar
+                </Button>
+                <Button onClick={handleTransferenciaBancaria} className="bg-red-600 hover:bg-red-700">
+                  Confirmar Transferência
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
     </PrintLayout>
   )
