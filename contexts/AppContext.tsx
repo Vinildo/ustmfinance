@@ -353,7 +353,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       const newFornecedor: Fornecedor = {
         ...fornecedor,
-        id: fornecedor.id || uuidv4(),
+        id: uuidv4(), // Sempre gerar um novo UUID válido
         nome: fornecedor.nome || "Fornecedor Sem Nome",
         pagamentos: fornecedor.pagamentos || [],
       }
@@ -394,10 +394,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
           throw new Error("ID do fornecedor inválido")
         }
 
-        // Criar o pagamento com ID se não tiver
+        // Criar o pagamento com ID UUID
         const newPagamento: Pagamento = {
           ...pagamento,
-          id: pagamento.id || `pagamento-${Date.now()}`,
+          id: pagamento.id || uuidv4(), // Usar UUID em vez de string personalizada
         }
         console.log("[AppContext] Novo pagamento criado:", newPagamento)
 
